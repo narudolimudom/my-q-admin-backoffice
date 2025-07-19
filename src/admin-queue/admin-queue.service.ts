@@ -92,11 +92,14 @@ export class AdminQueueService {
   }
 
   async updateQueueStatus(queueId: string, updateDto: UpdateQueueStatusDto): Promise<QueueEntry> {
+    console.log("AAA", await this.prismaService.queueEntry.findMany({}))
     const { status } = updateDto;
-
+    
     const existingQueue = await this.prismaService.queueEntry.findUnique({
       where: { id: queueId },
     });
+
+    console.log("HOW", existingQueue)
 
     if (!existingQueue) {
       throw new NotFoundException();

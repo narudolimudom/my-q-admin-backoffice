@@ -10,13 +10,11 @@ export class RolesGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    console.log("WThhhF", requiredRoles)
     if (!requiredRoles) {
       return true; // ถ้าไม่มี @Roles() decorator ก็อนุญาตให้ผ่าน
     }
     const { user } = context.switchToHttp().getRequest();
     // ตรวจสอบว่า user มี role ที่ต้องการหรือไม่
-    console.log("useruseruser", user)
     return requiredRoles.some((role) => user.role?.includes(role));
   }
 }
