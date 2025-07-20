@@ -12,7 +12,7 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     AuthModule,
-    AdminQueueModule
+    AdminQueueModule,
   ],
   controllers: [AppController],
   providers: [AppService, QueueUpdatesGateway],

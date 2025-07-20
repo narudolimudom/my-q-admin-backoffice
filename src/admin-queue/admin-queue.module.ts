@@ -9,4 +9,4 @@ import { QueueUpdatesModule } from 'src/queue-updates/queue-updates.module';
   providers: [AdminQueueService],
   controllers: [AdminQueueController],
 })
-export class AdminQueueModule { }
+export class AdminQueueModule {}

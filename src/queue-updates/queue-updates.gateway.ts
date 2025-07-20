@@ -1,3 +1,4 @@
+// queue-updates.gateway.ts
 import {
   WebSocketGateway,
   WebSocketServer,
@@ -7,28 +8,33 @@ import {
 import { Server, Socket } from 'socket.io';
 import { Logger } from '@nestjs/common';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 @WebSocketGateway({
   cors: {
-    origin: '*'
+    origin: '*',
   },
-  namespace: '/queue'
+  namespace: '/queue',
 })
-export class QueueUpdatesGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class QueueUpdatesGateway
+  implements OnGatewayConnection, OnGatewayDisconnect
+{
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   @WebSocketServer()
   server: Server;
 
   private readonly logger = new Logger(QueueUpdatesGateway.name);
 
-  handleConnection(client: Socket, ...args: any[]) {
-    this.logger.log(`Admin panel client connected to queue namespace: ${client.id}`);
+  handleConnection(client: Socket) {
+    this.logger.log(`Client connected: ${client.id}`);
+    client.emit('connected', { message: 'You are connected to /queue' });
   }
 
   handleDisconnect(client: Socket) {
-    this.logger.log(`Admin panel client disconnected from queue namespace: ${client.id}`);
+    this.logger.log(`Client disconnected: ${client.id}`);
   }
 
   emitQueueUpdate(data: any) {
-    this.logger.debug(`Emitting queueUpdate from Admin Panel: ${JSON.stringify(data)}`);
+    this.logger.debug(`Broadcasting queueUpdate: ${JSON.stringify(data)}`);
     this.server.emit('queueUpdate', data);
   }
 }

@@ -8,6 +8,6 @@ import { UserController } from './user.controller';
   imports: [PrismaModule],
   providers: [UserService],
   controllers: [UserController],
-  exports: [UserService], // ต้อง Export เพื่อให้ AuthModule สามารถ Inject UserService ได้
+  exports: [UserService],
 })
 export class UserModule {}

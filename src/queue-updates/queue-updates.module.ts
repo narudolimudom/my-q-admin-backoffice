@@ -4,6 +4,6 @@ import { QueueUpdatesGateway } from './queue-updates.gateway';
 
 @Module({
   providers: [QueueUpdatesGateway],
-  exports: [QueueUpdatesGateway]
+  exports: [QueueUpdatesGateway],
 })
 export class QueueUpdatesModule {}

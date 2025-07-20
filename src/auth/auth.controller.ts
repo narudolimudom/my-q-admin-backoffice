@@ -2,7 +2,6 @@
 import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { LocalAuthGuard } from './guards/local-auth.guard';
 // import { LoginAdminDto } from './dto/login-admin.dto';
 
 @Controller('admin/auth') // Prefix สำหรับ Admin Auth

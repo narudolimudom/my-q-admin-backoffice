@@ -1,5 +1,15 @@
 // src/admin-queue/admin-queue.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminQueueService } from './admin-queue.service';
 import { UpdateQueueStatusDto } from './dto/update-queue-status.dto';
 import { CreateQueueEntryAdminDto } from './dto/create-queue-entry-admin.dto';
@@ -8,15 +18,19 @@ import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
 
-@UseGuards(JwtAuthGuard, RolesGuard) // ใช้ JWT Auth และ Role Guard สำหรับ Controller นี้
-@Roles('admin') // กำหนดให้เฉพาะ Admin เท่านั้นที่เข้าถึงได้
-@Controller('admin/queue') // Prefix เส้นทางสำหรับ Admin
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('admin')
+@Controller('admin/queue')
 export class AdminQueueController {
   constructor(private readonly adminQueueService: AdminQueueService) {}
 
   @Post('create-for-customer')
-  async createQueueEntryForCustomer(@Body() createQueueEntryDto: CreateQueueEntryAdminDto) {
-    return this.adminQueueService.createQueueEntryForCustomer(createQueueEntryDto);
+  async createQueueEntryForCustomer(
+    @Body() createQueueEntryDto: CreateQueueEntryAdminDto,
+  ) {
+    return this.adminQueueService.createQueueEntryForCustomer(
+      createQueueEntryDto,
+    );
   }
 
   @Get()
@@ -28,7 +42,10 @@ export class AdminQueueController {
   }
 
   @Put(':id/status')
-  async updateQueueStatus(@Param('id') id: string, @Body() updateDto: UpdateQueueStatusDto) {
+  async updateQueueStatus(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateQueueStatusDto,
+  ) {
     return this.adminQueueService.updateQueueStatus(id, updateDto);
   }
 
@@ -40,7 +57,6 @@ export class AdminQueueController {
 
   @Post('clear-table/:tableType')
   async clearTable(@Param('tableType') tableType: TableType) {
-    // สมมติว่า clearTable คือการเรียกคิวถัดไปสำหรับโต๊ะประเภทนั้นๆ
     return this.adminQueueService.clearTable(tableType);
   }
 

@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { UserService } from 'src/user/user.service';
 // import { LoginAdminDto } from './dto/login-admin.dto';
@@ -12,13 +16,11 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    console.log("AAAAAAAAAA")
+  public async validateUser(email: string, pass: string): Promise<any> {
     const user = await this.userService.getUserDetailByEmail(email);
-    console.log("BBBBBBBBB")
     if (user && (await bcrypt.compare(pass, user.password))) {
       if (user.role !== Role.ADMIN) {
-          throw new UnauthorizedException();
+        throw new UnauthorizedException();
       }
       const { password, ...result } = user;
       return result;
@@ -26,9 +28,11 @@ export class AuthService {
     return null;
   }
 
-  async login(loginAdminDto: any) {
-    console.log("TRIGGER")
-    const user = await this.validateUser(loginAdminDto.email, loginAdminDto.password);
+  public async login(loginAdminDto: any) {
+    const user = await this.validateUser(
+      loginAdminDto.email,
+      loginAdminDto.password,
+    );
     if (!user) {
       throw new UnauthorizedException();
     }
@@ -41,16 +45,16 @@ export class AuthService {
 
   // (Optional) เมธอดสำหรับ Register Admin ครั้งแรก (ควรทำด้วยมือหรือผ่าน Seed ข้อมูล)
   // ไม่ควรมี API ให้ Register Admin ผ่านหน้า Frontend โดยตรง
-  async registerAdmin(email: string, passwordPlain: string) {
-      const existingUser = await this.userService.getUserDetailByEmail(email);
-      if (existingUser) {
-          throw new BadRequestException();
-      }
-      const hashedPassword = await bcrypt.hash(passwordPlain, 10);
-      return this.userService.registerUser({
-          email,
-          password: hashedPassword,
-          role: Role.ADMIN
-      } as any);
+  public async registerAdmin(email: string, passwordPlain: string) {
+    const existingUser = await this.userService.getUserDetailByEmail(email);
+    if (existingUser) {
+      throw new BadRequestException();
+    }
+    const hashedPassword = await bcrypt.hash(passwordPlain, 10);
+    return this.userService.registerUser({
+      email,
+      password: hashedPassword,
+      role: Role.ADMIN,
+    } as any);
   }
 }
